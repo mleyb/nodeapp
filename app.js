@@ -1,5 +1,9 @@
-var express = require('express');
+var express = require('express'),
+    bodyParser = require('body-parser');
+
 var app = express();
+
+app.use(bodyParser());
 
 var quotes = [
     { author : 'Audrey Hepburn', text : "Nothing is impossible, the word itself says 'I'm possible'!" },
@@ -7,8 +11,6 @@ var quotes = [
     { author : 'Unknown', text : "Even the greatest was once a beginner. Don't be afraid to take that first step." },
     { author : 'Neale Donald Walsch', text : "You are afraid to die, and you're afraid to live. What a way to exist." }
 ];
-
-//app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 app.get('/', function (req, res) {
     console.log('GET');
@@ -22,6 +24,11 @@ app.get('/quote/:id', function (req, res) {
     }
     var q = quotes[req.params.id];
     res.json(q);
+});
+
+app.post('/api', function (req, resp) {
+    console.log('POST: ' + JSON.stringify(req.body));
+    resp.send('ok');
 });
 
 app.listen(process.env.PORT || 4730);
